@@ -23,10 +23,9 @@ def main():
     args = parser.parse_args()
     source = Path(__file__).resolve().parents[1]
     registry_root = source.parent.parent
-    registry = registry_root / 'config/local-skills.txt'
-    if not registry.is_file() or 'poteto-mode' not in {
-            line.split('#', 1)[0].strip() for line in registry.read_text().splitlines()}:
-        parser.error('Austin Skills의 config/local-skills.txt에 poteto-mode를 먼저 등록해주세요.')
+    registry = registry_root / 'config/skills.json'
+    if not registry.is_file() or 'poteto-mode' not in json.loads(registry.read_text()).get('project', []):
+        parser.error('config/skills.json의 project에 poteto-mode를 먼저 등록해주세요.')
     if not args.project.is_absolute() or not (args.project / 'AGENTS.md').is_file():
         parser.error('AGENTS.md가 있는 프로젝트의 절대 경로를 지정해주세요.')
     manifest = json.loads((source / 'manifest.json').read_text())

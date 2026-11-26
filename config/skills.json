@@ -1,0 +1,18 @@
+{
+  "global": [
+    "skill-sync"
+  ],
+  "project": [
+    "poteto-mode"
+  ],
+  "dependencies": {
+    "poteto-mode": {
+      "bundled": [
+        "vendor/pstack/skills/poteto-mode/SKILL.md",
+        "vendor/cursor-team-kit/skills/deslop/SKILL.md",
+        "vendor/cursor-team-kit/skills/control-cli/SKILL.md",
+        "vendor/cursor-team-kit/skills/control-ui/SKILL.md"
+      ]
+    }
+  }
+}

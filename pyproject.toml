@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "austin-workspace-kit"
+version = "0.1.0"
+description = "프로젝트의 스킬과 문서 템플릿을 관리하는 CLI"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["PyYAML>=6,<7"]
+
+[project.scripts]
+workspace-kit = "workspace_kit.cli:main"
+
+[tool.hatch.build.targets.sdist]
+include = ["/src", "/config/skills.json", "/skills", "/rules", "/templates", "/README.md", "/pyproject.toml"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/workspace_kit"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"config/skills.json" = "workspace_kit/assets/config/skills.json"
+"skills" = "workspace_kit/assets/skills"
+"rules" = "workspace_kit/assets/rules"
+"templates" = "workspace_kit/assets/templates"

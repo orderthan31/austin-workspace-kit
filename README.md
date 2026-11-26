@@ -7,48 +7,56 @@
 | [rules/](rules/) | 문서 정본·변경 이력·인계 관리, 개인 작업 기준 |
 | [templates/project/](templates/project/) | 프로젝트 루트 규칙과 기능 명세·설계·스프린트·백로그·인계 양식 |
 | [templates/obsidian/](templates/obsidian/) | 일간·주간·월간·프로젝트·이슈 보드 양식 |
-| [skills/](skills/) · [agents/](agents/) | 수정하는 스킬 원본과 선택형 에이전트 |
-| [config/](config/) · [scripts/](scripts/) | 설치 목록, 스킬 의존성, 생성·설치 스크립트 |
+| [skills/](skills/) | 수정하는 스킬 원본 |
+| [config/](config/) · [src/workspace_kit/](src/workspace_kit/) | 설치 목록, 스킬 의존성, 관리 CLI |
 
-## 프로젝트 문서 시작하기
+## 관리 CLI 설치
 
-저장소를 클론한 폴더에서 실행합니다. 문서 생성에는 Python 3.10 이상이 필요합니다. 대상 폴더의 기존 파일은 유지합니다.
-
-```bash
-python3 scripts/init-project-docs.py /path/to/project --dry-run
-python3 scripts/init-project-docs.py /path/to/project
-```
-
-설치 후 대상 프로젝트의 `AGENTS.md`에서 규칙을 확인합니다. 스프린트가 정해졌을 때 `docs/plans/sprint.md`의 기간·상태를 채우고, 미편성 일감은 `tasks.md`에 둡니다.
-
-## 스킬 설치하기
-
-Python 3.10 이상, Bash, rsync가 필요합니다. YAML 검증에 사용하는 PyYAML은 가상환경에 설치할 수 있습니다.
+Python 3.10 이상이 필요합니다. 저장소를 받은 뒤 아래 명령으로 `workspace-kit`을 한 번 설치합니다. 그다음부터 대상 프로젝트에서 바로 실행할 수 있습니다.
 
 ```bash
-python3 -m venv .venv
-. .venv/bin/activate
-python -m pip install -r requirements.txt
-bash scripts/sync-skills.sh --dry-run
-bash scripts/sync-skills.sh
+uv tool install /path/to/austin-workspace-kit
+workspace-kit --version
 ```
 
-- 기본은 [공용 목록](config/global-skills.txt)만 설치합니다. 설치 위치는 `CLAUDE_SKILLS_DST`, `AGENTS_DST`, `ANTI_CLI_DST`, `ANTI_DST` 환경 변수로 바꿀 수 있습니다. 기본값은 각 CLI의 홈 경로입니다.
-- `--include-obsidian`을 붙이면 [Obsidian 목록](config/obsidian-skills.txt)을 더합니다. 볼트 작업을 호출할 때 `OBSIDIAN_ROOT`에 사용할 폴더를 지정합니다. 일부 스킬이 사용하는 볼트 자동화는 해당 볼트에서 선택적으로 설정합니다. Obsidian 전용 에이전트는 `bash scripts/sync-obsidian-agent.sh`로 별도 설치합니다.
-- 포테이토 모드는 프로젝트별로 설치합니다. 패키지와 함께 배포되는 외부 스킬의 버전 및 무결성은 [manifest.json](skills/poteto-mode/manifest.json)에서 확인합니다.
+공용 스킬과 템플릿은 CLI에 포함됩니다. 킷 저장소를 수정한 버전으로 다시 설치하려면 같은 경로에 `uv tool install --reinstall`을 실행합니다.
+
+## 프로젝트에서 사용
+```bash
+workspace-kit skills list
+workspace-kit skills catalog
+workspace-kit skills install poteto-mode --dry-run
+workspace-kit skills install poteto-mode
+workspace-kit skills update --dry-run
+workspace-kit skills update
+workspace-kit templates install --dry-run
+workspace-kit templates install
+```
+
+- 현재 폴더부터 올라가며 `.git` 또는 `AGENTS.md`가 있는 폴더를 프로젝트 루트로 사용합니다. 다른 프로젝트나 새 폴더에 적용하려면 `--project /path/to/project`를 붙입니다.
+- `skills list`는 프로젝트의 `.agents`, `.claude`, `.codex`, `.agent`, `.cursor` 아래에 실제 설치된 스킬과 관리 상태를 보여줍니다. `skills catalog`는 킷에서 제공하는 설치 목록입니다.
+- `skills install`은 프로젝트에서 공용으로 쓸 `.agents/skills`에 설치합니다. `skills update`는 이미 설치된 스킬 중 원본을 확인할 수 있는 것만 갱신합니다. `update poteto-mode`처럼 이름을 주면 대상 하나만 갱신합니다.
+- 설치본에서 수동 수정이 확인되면 경로와 함께 보류로 표시합니다. 이전 포테이토 설치본은 패키지 이름·출처·파일 해시가 확인되면 그대로 이어서 갱신합니다.
+- `templates install`은 빠진 `AGENTS.md`, 문서 규칙, 스프린트·백로그 등만 채웁니다. 옵시디언 양식은 `templates install --preset obsidian --project /path/to/vault`로 볼트의 `templates/`에 설치합니다.
+
+## 공용 스킬 관리
+
+공용 [설치 목록](config/skills.json)은 `--global`로 선택합니다. 사용자 홈의 특정 실행 환경은 `--target claude`, `--target agents`, `--target antigravity-cli`, `--target antigravity-app`으로 선택하고, 직접 정한 설치 위치는 `--dest /path/to/skills`로 지정합니다.
 
 ```bash
-python3 skills/poteto-mode/scripts/sync_project.py --project /path/to/project
+workspace-kit skills install skill-sync --global
+workspace-kit skills remove skill-sync --target agents
+workspace-kit skills remove skill-sync --target agents --apply
 ```
 
-Herdr와 모델 CLI는 스킬을 실행할 때만 필요합니다. 모델 폴백은 [model-routes.json](skills/poteto-mode/config/model-routes.json)에서 관리합니다.
+포테이토를 실제로 실행할 때 Herdr와 모델 CLI가 필요합니다. 외부 스킬의 버전·해시는 [manifest.json](skills/poteto-mode/manifest.json), 모델 폴백은 [model-routes.json](skills/poteto-mode/config/model-routes.json)에서 확인합니다.
+
+기존 `scripts/skills.py`와 `scripts/init-project-docs.py` 호출도 저장소에서 사용할 수 있습니다.
 
 ### 스킬 의존성
 
-[skill-dependencies.json](config/skill-dependencies.json)의 `requires`에 스킬 이름을 넣으면 그 스킬과 하위 의존성을 먼저 설치합니다. 외부 스킬을 패키지에 포함할 때는 출처·버전·라이선스를 보존하고 `bundled`에 확인할 상대 경로를 적습니다. 설치는 저장소에 들어 있는 원본을 사용하므로 외부 스킬을 임의로 받아 실행하지 않습니다.
-
-예를 들어 `obsidian-plan-reset`만 등록해도 `obsidian-plan-register`와 `obsidian-cli-guideline`이 같이 설치됩니다.
+[skills.json](config/skills.json)의 `dependencies.<스킬 이름>.requires`에 다른 스킬 이름을 넣으면 해당 스킬과 하위 의존성을 먼저 설치합니다. 외부 스킬을 패키지에 포함할 때는 출처·버전·라이선스를 보존하고 같은 항목의 `bundled`에 확인할 상대 경로를 적습니다. 포함된 파일은 패키지와 함께 복사됩니다.
 
 ### 프로젝트 전용 설정
 
-공용 템플릿을 프로젝트에 적용한 뒤 해당 프로젝트의 규칙과 업무 문서는 그 프로젝트에서 유지합니다. 한 컴퓨터에서만 쓰는 스킬은 Git에서 제외하는 `private/skills/`에 두고 `private/global-skills.txt`와 필요시 `private/skill-dependencies.json`에 등록합니다. 이 목록을 설치에 포함할 때는 `--include-private`을 붙입니다.
+공용 템플릿을 적용한 뒤 프로젝트별 규칙과 업무 문서는 각 프로젝트에서 유지합니다. 로컬 전용 스킬은 킷 저장소의 `private/skills/`와 `private/skills.json`에 둡니다. 로컬 원본이나 비공개 목록을 사용할 때는 `--kit /path/to/austin-workspace-kit`을 지정하고 비공개 목록에는 `--include-private`을 추가합니다.

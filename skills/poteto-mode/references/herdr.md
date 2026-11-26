@@ -104,6 +104,6 @@ python3 /절대경로/poteto-mode/scripts/delegate.py \
 
 ## 설치와 갱신
 
-이 커스텀 스킬의 정본은 이 저장소의 `skills/poteto-mode/`다. `config/local-skills.txt`에만 등록하며 전역 배포 목록에는 넣지 않는다. 프로젝트 적용은 정본의 `scripts/sync_project.py --project /프로젝트/절대경로`로 한다.
+킷 원본은 `skills/poteto-mode/`에 있고 `config/skills.json`의 `project`에 등록한다. 프로젝트에서 `workspace-kit skills install poteto-mode`로 설치하고 `workspace-kit skills update poteto-mode`로 갱신한다.
 
 기존 프로젝트의 8개 개별 스킬은 보존한다. 이 모드가 실행할 때만 함께 제공한 최신 묶음으로 하위 스킬을 해석한다. 외부 원본 버전·커밋·파일 해시는 `manifest.json`에 있다.

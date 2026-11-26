@@ -1,3 +1,0 @@
-# 공용 설치에 기본으로 포함하는 스킬입니다.
-create-subagent
-obsidian-sync-skills-pipeline

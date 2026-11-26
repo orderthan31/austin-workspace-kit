@@ -1,5 +1,6 @@
 /private/
 /.venv/
+/dist/
 .env
 .env.*
 !.env.example

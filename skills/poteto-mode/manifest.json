@@ -15,10 +15,10 @@
   "files": {
     "SKILL.md": "884ee2933073c921d0f89b441b5ca2c526077d0d704a40902e6d8c5860debb1b",
     "config/model-routes.json": "0acc040aac966f79af67b53c66a0b5a795c751f0b2c649552aace20872852bd7",
-    "references/herdr.md": "e2b46f8fd0dfb9da6d7e0a82ec2940c93ef2ea1b4f352727c77f58db44a51b9d",
+    "references/herdr.md": "23ff75f9af7ec8a5710da1602dec29381e9a543eb062e77cc809fa663e80c7c3",
     "scripts/delegate.py": "e0e774df942c6569e4d2bc180f030ab79777bf8d91ab0a4a4c585eb237bab735",
     "scripts/quota.py": "d800e3986fafd23bc3899b0550c02dedecd9e4c7de1698bdb2b836ea8a9583fe",
-    "scripts/sync_project.py": "a1879684d4e379c75fd757eca764b220d4a3c70713fc7fd8ae32f544bfdf6659",
+    "scripts/sync_project.py": "d09f49d280b794dd18a1c1283cf570cde90e1b872d70ce1e6eb845c082af7971",
     "vendor/cursor-team-kit/LICENSE": "702f5f331b56aff0e33d8c7826df5202559f894145eb70355c6477b55b5bb8a0",
     "vendor/cursor-team-kit/skills/control-cli/SKILL.md": "13ac93e595bbda2000849bdb815d5f2ca03f7c2ca63788c8335f9212b9b422a2",
     "vendor/cursor-team-kit/skills/control-ui/SKILL.md": "410cae25bdb1e5d2323b126abc5047b0213be7fdb0195710213fa8de8a751871",
