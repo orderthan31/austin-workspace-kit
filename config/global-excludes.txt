@@ -1,0 +1,12 @@
+# 원본은 보존하지만 글로벌 런타임에서는 제거 상태를 유지할 스킬입니다.
+deep-planning
+deep-planning-cross-review
+document-to-implementation-workflow
+frontend-feedback-fix-workflow
+implement-from-plan
+kanban-task-board-sync
+planning-docs-workflow
+realistic-demo-data-workflow
+requirement-intake-normalizer
+service-level-mock-workflow
+obsidian-bug-kanban-ops

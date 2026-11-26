@@ -1,0 +1,18 @@
+{
+  "routes": {
+    "investigate": [
+      { "provider": "claude", "model": "sonnet" },
+      { "provider": "antigravity", "model": "gemini-4-hydrogen-high" },
+      { "provider": "codex", "model": null }
+    ],
+    "implement": [
+      { "provider": "claude", "model": "opus[1m]" },
+      { "provider": "antigravity", "model": "gemini-4-neon-high" },
+      { "provider": "codex", "model": null }
+    ]
+  },
+  "antigravity_quota_groups": {
+    "gemini-4-hydrogen-high": "Gemini 4 Hydrogen",
+    "gemini-4-neon-high": "Gemini 4 Neon"
+  }
+}
